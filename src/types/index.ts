@@ -250,3 +250,69 @@ export interface DashboardAuditLog {
   action: string
   timestamp: string
 }
+
+// ── 経理・会計（Accounting）追加型 ──
+
+// 入金・出金スケジュール
+export interface PaymentScheduleItem {
+  id: string
+  date: string
+  companyName: string
+  amount: number
+  type: 'income' | 'expense'
+  description: string
+}
+
+// 未収金一覧
+export interface AccountsReceivableItem {
+  id: string
+  invoiceNumber: string
+  clientName: string
+  amount: number
+  dueDate: string
+  daysPastDue: number
+  status: 'current' | 'overdue' | 'critical'
+}
+
+// 仕訳
+export interface JournalEntry {
+  id: string
+  date: string
+  description: string
+  debit: number
+  credit: number
+  account: string
+}
+
+// 経費内訳（ドーナツ用）
+export interface ExpenseCategoryDonut {
+  name: string
+  value: number
+  color: string
+}
+
+// ── 人事・労務（HR）追加型 ──
+
+// 月次残業推移
+export interface MonthlyOvertime {
+  month: string
+  average: number
+  max: number
+}
+
+// 部署別残業
+export interface DepartmentOvertime {
+  department: string
+  employees: { name: string; hours: number }[]
+}
+
+// 勤怠サマリー（月間）
+export interface MonthlyAttendanceSummary {
+  employeeId: string
+  employeeName: string
+  department: string
+  workDays: number
+  totalOvertime: number
+  lateCount: number
+  absenceCount: number
+}

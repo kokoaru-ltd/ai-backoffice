@@ -21,6 +21,13 @@ import type {
   PipelineFunnel,
   PendingApproval,
   DashboardAuditLog,
+  PaymentScheduleItem,
+  AccountsReceivableItem,
+  JournalEntry,
+  ExpenseCategoryDonut,
+  MonthlyOvertime,
+  DepartmentOvertime,
+  MonthlyAttendanceSummary,
 } from '../types'
 
 // ── 従業員 ──
@@ -276,4 +283,117 @@ export const mockDashboardAuditLogs: DashboardAuditLog[] = [
   { id: 'dl5', icon: 'alert', domain: 'general', userName: '高橋 翔太', action: '備品登録エラー（在庫番号重複）', timestamp: '11:00' },
   { id: 'dl6', icon: 'file', domain: 'accounting', userName: '鈴木 花子', action: 'ミライソリューション請求書作成', timestamp: '16:00' },
   { id: 'dl7', icon: 'upload', domain: 'documents', userName: '田中 太郎', action: 'サクラテック契約書アップロード', timestamp: '13:00' },
+]
+
+// ══════════════════════════════════════════
+// 経理・会計ページ 追加データ
+// ══════════════════════════════════════════
+
+// ── 入金・出金スケジュール（30日分） ──
+export const mockPaymentSchedule: PaymentScheduleItem[] = [
+  { id: 'ps1', date: '2026-02-25', companyName: '株式会社ABC商事', amount: 3080000, type: 'income', description: '請求書 INV-2026-0044 入金' },
+  { id: 'ps2', date: '2026-02-26', companyName: 'AWS Japan', amount: 125000, type: 'expense', description: 'クラウドインフラ利用料' },
+  { id: 'ps3', date: '2026-02-28', companyName: '株式会社サクラテック', amount: 1500000, type: 'income', description: '追加開発案件 前受金' },
+  { id: 'ps4', date: '2026-03-01', companyName: '東京電力エナジーパートナー', amount: 85000, type: 'expense', description: 'オフィス電気代' },
+  { id: 'ps5', date: '2026-03-03', companyName: 'WeWork Japan', amount: 680000, type: 'expense', description: 'オフィス賃料' },
+  { id: 'ps6', date: '2026-03-05', companyName: '合同会社ミライソリューション', amount: 1045000, type: 'income', description: 'DX推進支援 着手金' },
+  { id: 'ps7', date: '2026-03-10', companyName: 'NTTコミュニケーションズ', amount: 45000, type: 'expense', description: '通信回線費' },
+  { id: 'ps8', date: '2026-03-15', companyName: '東京デジタル株式会社', amount: 4250000, type: 'income', description: 'クラウド移行PJ 中間金' },
+  { id: 'ps9', date: '2026-03-20', companyName: '社会保険事務所', amount: 1200000, type: 'expense', description: '社会保険料' },
+  { id: 'ps10', date: '2026-03-25', companyName: '従業員給与', amount: 4800000, type: 'expense', description: '2026年3月分給与' },
+]
+
+// ── 未収金一覧（Accounts Receivable） ──
+export const mockAccountsReceivable: AccountsReceivableItem[] = [
+  { id: 'ar1', invoiceNumber: 'INV-2026-0043', clientName: '日本テクノ株式会社', amount: 1650000, dueDate: '2026-02-14', daysPastDue: 9, status: 'overdue' },
+  { id: 'ar2', invoiceNumber: 'INV-2026-0044', clientName: '株式会社ABC商事', amount: 3080000, dueDate: '2026-02-28', daysPastDue: 0, status: 'current' },
+  { id: 'ar3', invoiceNumber: 'INV-2025-0039', clientName: '大阪商事株式会社', amount: 2200000, dueDate: '2026-01-31', daysPastDue: 23, status: 'critical' },
+  { id: 'ar4', invoiceNumber: 'INV-2026-0046', clientName: '合同会社ミライソリューション', amount: 1045000, dueDate: '2026-03-20', daysPastDue: 0, status: 'current' },
+  { id: 'ar5', invoiceNumber: 'INV-2026-0041', clientName: '株式会社グローバルコネクト', amount: 880000, dueDate: '2026-02-10', daysPastDue: 13, status: 'overdue' },
+  { id: 'ar6', invoiceNumber: 'INV-2026-0047', clientName: '株式会社サクラテック', amount: 1500000, dueDate: '2026-03-15', daysPastDue: 0, status: 'current' },
+]
+
+// ── 最近の仕訳 ──
+export const mockJournalEntries: JournalEntry[] = [
+  { id: 'je1', date: '2026-02-20', description: 'サクラテック 売上計上', debit: 3850000, credit: 0, account: '売掛金' },
+  { id: 'je2', date: '2026-02-20', description: 'サクラテック 売上計上', debit: 0, credit: 3850000, account: '売上高' },
+  { id: 'je3', date: '2026-02-19', description: '交通費精算（田中）', debit: 27500, credit: 0, account: '旅費交通費' },
+  { id: 'je4', date: '2026-02-19', description: '交通費精算（田中）', debit: 0, credit: 27500, account: '現金' },
+  { id: 'je5', date: '2026-02-18', description: 'AWS利用料計上', debit: 125000, credit: 0, account: '通信費' },
+  { id: 'je6', date: '2026-02-18', description: 'AWS利用料計上', debit: 0, credit: 125000, account: '未払金' },
+  { id: 'je7', date: '2026-02-15', description: '東京デジタル入金', debit: 4620000, credit: 0, account: '普通預金' },
+  { id: 'je8', date: '2026-02-15', description: '東京デジタル入金', debit: 0, credit: 4620000, account: '売掛金' },
+]
+
+// ── 経費内訳（ドーナツチャート用） ──
+export const mockExpenseCategoryDonut: ExpenseCategoryDonut[] = [
+  { name: '人件費', value: 4800000, color: '#2563eb' },
+  { name: '外注費', value: 2100000, color: '#7c3aed' },
+  { name: '地代家賃', value: 680000, color: '#0891b2' },
+  { name: '旅費交通費', value: 320000, color: '#16a34a' },
+  { name: '通信費', value: 250000, color: '#f59e0b' },
+  { name: 'その他', value: 650000, color: '#6b7280' },
+]
+
+// ══════════════════════════════════════════
+// 人事・労務ページ 追加データ
+// ══════════════════════════════════════════
+
+// ── 月次残業推移（12ヶ月） ──
+export const mockMonthlyOvertime: MonthlyOvertime[] = [
+  { month: '3月', average: 22.5, max: 38.0 },
+  { month: '4月', average: 25.0, max: 42.0 },
+  { month: '5月', average: 18.0, max: 35.0 },
+  { month: '6月', average: 20.5, max: 37.0 },
+  { month: '7月', average: 24.0, max: 41.0 },
+  { month: '8月', average: 15.0, max: 30.0 },
+  { month: '9月', average: 21.0, max: 36.0 },
+  { month: '10月', average: 23.5, max: 40.0 },
+  { month: '11月', average: 19.0, max: 34.0 },
+  { month: '12月', average: 28.0, max: 48.0 },
+  { month: '1月', average: 20.0, max: 39.0 },
+  { month: '2月', average: 18.2, max: 42.5 },
+]
+
+// ── 部署別残業分布 ──
+export const mockDepartmentOvertime: DepartmentOvertime[] = [
+  {
+    department: '開発部',
+    employees: [
+      { name: '高橋 翔太', hours: 42.5 },
+      { name: '渡辺 大輝', hours: 35.5 },
+    ],
+  },
+  {
+    department: '営業部',
+    employees: [
+      { name: '田中 太郎', hours: 38.0 },
+      { name: '佐藤 健一', hours: 28.0 },
+      { name: '伊藤 愛', hours: 5.0 },
+    ],
+  },
+  {
+    department: '人事部',
+    employees: [
+      { name: '山田 美咲', hours: 12.5 },
+    ],
+  },
+  {
+    department: '経理部',
+    employees: [
+      { name: '鈴木 花子', hours: 8.0 },
+    ],
+  },
+]
+
+// ── 勤怠サマリー（月間） ──
+export const mockMonthlyAttendanceSummary: MonthlyAttendanceSummary[] = [
+  { employeeId: 'e1', employeeName: '田中 太郎', department: '営業部', workDays: 15, totalOvertime: 38.0, lateCount: 0, absenceCount: 0 },
+  { employeeId: 'e2', employeeName: '鈴木 花子', department: '経理部', workDays: 15, totalOvertime: 8.0, lateCount: 0, absenceCount: 0 },
+  { employeeId: 'e3', employeeName: '佐藤 健一', department: '営業部', workDays: 14, totalOvertime: 28.0, lateCount: 3, absenceCount: 0 },
+  { employeeId: 'e4', employeeName: '山田 美咲', department: '人事部', workDays: 15, totalOvertime: 12.5, lateCount: 0, absenceCount: 0 },
+  { employeeId: 'e5', employeeName: '高橋 翔太', department: '開発部', workDays: 15, totalOvertime: 42.5, lateCount: 0, absenceCount: 0 },
+  { employeeId: 'e6', employeeName: '伊藤 愛', department: '営業部', workDays: 13, totalOvertime: 5.0, lateCount: 0, absenceCount: 0 },
+  { employeeId: 'e7', employeeName: '渡辺 大輝', department: '開発部', workDays: 15, totalOvertime: 35.5, lateCount: 0, absenceCount: 0 },
+  { employeeId: 'e8', employeeName: '中村 さくら', department: '総務部', workDays: 0, totalOvertime: 0, lateCount: 0, absenceCount: 15 },
 ]
