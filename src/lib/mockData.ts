@@ -14,6 +14,13 @@ import type {
   OfficeRequest,
   AuditLogEntry,
   MonthlyRevenue,
+  SparklinePoint,
+  CashFlowForecast,
+  ExpenseCategory,
+  ReceivableAging,
+  PipelineFunnel,
+  PendingApproval,
+  DashboardAuditLog,
 } from '../types'
 
 // ── 従業員 ──
@@ -124,6 +131,12 @@ export const mockExpenses: Expense[] = [
 
 // ── PL ──
 export const mockPLSummary: PLSummary[] = [
+  { month: '2025年3月', revenue: 10800000, cost_of_sales: 4300000, gross_profit: 6500000, operating_expenses: 4200000, operating_income: 2300000 },
+  { month: '2025年4月', revenue: 11500000, cost_of_sales: 4600000, gross_profit: 6900000, operating_expenses: 4300000, operating_income: 2600000 },
+  { month: '2025年5月', revenue: 12200000, cost_of_sales: 4900000, gross_profit: 7300000, operating_expenses: 4400000, operating_income: 2900000 },
+  { month: '2025年6月', revenue: 13000000, cost_of_sales: 5200000, gross_profit: 7800000, operating_expenses: 4500000, operating_income: 3300000 },
+  { month: '2025年7月', revenue: 11900000, cost_of_sales: 4800000, gross_profit: 7100000, operating_expenses: 4400000, operating_income: 2700000 },
+  { month: '2025年8月', revenue: 10500000, cost_of_sales: 4200000, gross_profit: 6300000, operating_expenses: 4100000, operating_income: 2200000 },
   { month: '2025年9月', revenue: 12500000, cost_of_sales: 5000000, gross_profit: 7500000, operating_expenses: 4500000, operating_income: 3000000 },
   { month: '2025年10月', revenue: 14200000, cost_of_sales: 5600000, gross_profit: 8600000, operating_expenses: 4800000, operating_income: 3800000 },
   { month: '2025年11月', revenue: 11800000, cost_of_sales: 4700000, gross_profit: 7100000, operating_expenses: 4600000, operating_income: 2500000 },
@@ -132,14 +145,20 @@ export const mockPLSummary: PLSummary[] = [
   { month: '2026年2月', revenue: 15200000, cost_of_sales: 5800000, gross_profit: 9400000, operating_expenses: 5000000, operating_income: 4400000 },
 ]
 
-// ── 月次売上（チャート用） ──
+// ── 月次売上（チャート用 12ヶ月） ──
 export const mockMonthlyRevenue: MonthlyRevenue[] = [
-  { month: '9月', revenue: 12500000, expenses: 9500000 },
-  { month: '10月', revenue: 14200000, expenses: 10400000 },
-  { month: '11月', revenue: 11800000, expenses: 9300000 },
-  { month: '12月', revenue: 16500000, expenses: 11400000 },
-  { month: '1月', revenue: 13800000, expenses: 10400000 },
-  { month: '2月', revenue: 15200000, expenses: 10800000 },
+  { month: '3月', revenue: 10800000, expenses: 8500000, profit: 2300000 },
+  { month: '4月', revenue: 11500000, expenses: 8900000, profit: 2600000 },
+  { month: '5月', revenue: 12200000, expenses: 9300000, profit: 2900000 },
+  { month: '6月', revenue: 13000000, expenses: 9700000, profit: 3300000 },
+  { month: '7月', revenue: 11900000, expenses: 9200000, profit: 2700000 },
+  { month: '8月', revenue: 10500000, expenses: 8300000, profit: 2200000 },
+  { month: '9月', revenue: 12500000, expenses: 9500000, profit: 3000000 },
+  { month: '10月', revenue: 14200000, expenses: 10400000, profit: 3800000 },
+  { month: '11月', revenue: 11800000, expenses: 9300000, profit: 2500000 },
+  { month: '12月', revenue: 16500000, expenses: 11400000, profit: 5100000 },
+  { month: '1月', revenue: 13800000, expenses: 10400000, profit: 3400000 },
+  { month: '2月', revenue: 15200000, expenses: 10800000, profit: 4400000 },
 ]
 
 // ── ドキュメント ──
@@ -186,4 +205,75 @@ export const mockAuditLogs: AuditLogEntry[] = [
   { id: 'log8', org_id: 'org1', user_name: '伊藤 愛', domain: 'crm', intent: 'テレアポ実行', action: 'teleapo.execute_call', detail: 'ブルースカイへの架電を実行（不在）', success: true, timestamp: '2026-02-21 14:05:00' },
   { id: 'log9', org_id: 'org1', user_name: '渡辺 大輝', domain: 'general', intent: 'ITサポート依頼', action: 'requests.create', detail: 'VPN接続エラーのサポート依頼を作成', success: true, timestamp: '2026-02-20 17:30:00' },
   { id: 'log10', org_id: 'org1', user_name: '鈴木 花子', domain: 'accounting', intent: '経費却下', action: 'expenses.reject', detail: '田中太郎のタクシー代 ¥4,800 を却下（領収書不備）', success: true, timestamp: '2026-02-18 10:00:00' },
+]
+
+// ── KPIスパークラインデータ ──
+export const mockRevenueSparkline: SparklinePoint[] = [
+  { value: 10800000 }, { value: 11500000 }, { value: 12200000 }, { value: 13000000 },
+  { value: 11900000 }, { value: 10500000 }, { value: 12500000 }, { value: 14200000 },
+  { value: 11800000 }, { value: 16500000 }, { value: 13800000 }, { value: 15200000 },
+]
+
+export const mockProfitSparkline: SparklinePoint[] = [
+  { value: 2300000 }, { value: 2600000 }, { value: 2900000 }, { value: 3300000 },
+  { value: 2700000 }, { value: 2200000 }, { value: 3000000 }, { value: 3800000 },
+  { value: 2500000 }, { value: 5100000 }, { value: 3400000 }, { value: 4400000 },
+]
+
+export const mockCashSparkline: SparklinePoint[] = [
+  { value: 8200000 }, { value: 8800000 }, { value: 9500000 }, { value: 10200000 },
+  { value: 9800000 }, { value: 9200000 }, { value: 10100000 }, { value: 11300000 },
+  { value: 10800000 }, { value: 12800000 }, { value: 12000000 }, { value: 12500000 },
+]
+
+// ── キャッシュフロー予測（3ヶ月先） ──
+export const mockCashFlowForecast: CashFlowForecast[] = [
+  { month: '3月', inflow: 16800000, outflow: 12200000, net: 4600000 },
+  { month: '4月', inflow: 14500000, outflow: 11800000, net: 2700000 },
+  { month: '5月', inflow: 17200000, outflow: 13000000, net: 4200000 },
+]
+
+// ── 経費カテゴリ別内訳 ──
+export const mockExpenseCategories: ExpenseCategory[] = [
+  { name: '人件費', value: 45, percentage: 45, color: '#2563eb' },
+  { name: '外注費', value: 20, percentage: 20, color: '#7c3aed' },
+  { name: '交通費', value: 12, percentage: 12, color: '#16a34a' },
+  { name: '通信費', value: 8, percentage: 8, color: '#f59e0b' },
+  { name: 'その他', value: 15, percentage: 15, color: '#6b7280' },
+]
+
+// ── 売掛金エージング ──
+export const mockReceivableAging: ReceivableAging[] = [
+  { category: '未到来', amount: 4500000, color: '#2563eb' },
+  { category: '30日以内', amount: 2200000, color: '#16a34a' },
+  { category: '60日以内', amount: 1230000, color: '#f59e0b' },
+  { category: '90日超', amount: 800000, color: '#dc2626' },
+]
+
+// ── 商談パイプラインファネル ──
+export const mockPipelineFunnel: PipelineFunnel[] = [
+  { stage: 'lead', label: 'リード', amount: 8200000, count: 12, conversionRate: undefined },
+  { stage: 'proposal', label: '提案', amount: 9200000, count: 8, conversionRate: 67 },
+  { stage: 'negotiation', label: '交渉', amount: 10000000, count: 5, conversionRate: 63 },
+  { stage: 'won', label: '成約', amount: 3500000, count: 3, conversionRate: 60 },
+]
+
+// ── 承認待ちタスク ──
+export const mockPendingApprovals: PendingApproval[] = [
+  { id: 'pa1', avatar: '佐', name: '佐藤 健一', description: '接待交際費 - 顧客会食（ミライソリューション）', amount: 35000, timeAgo: '2時間前', type: 'expense' },
+  { id: 'pa2', avatar: '高', name: '高橋 翔太', description: 'AWS利用料（2月分）', amount: 125000, timeAgo: '5時間前', type: 'expense' },
+  { id: 'pa3', avatar: '渡', name: '渡辺 大輝', description: '外部モニター購入', amount: 45000, timeAgo: '1日前', type: 'purchase' },
+  { id: 'pa4', avatar: '伊', name: '伊藤 愛', description: '有給休暇申請（3/5-3/7）', amount: 0, timeAgo: '1日前', type: 'leave' },
+  { id: 'pa5', avatar: '田', name: '田中 太郎', description: 'サクラテック追加業務委託契約書', amount: 1500000, timeAgo: '2日前', type: 'contract' },
+]
+
+// ── ダッシュボード用AI操作ログ（タイムライン） ──
+export const mockDashboardAuditLogs: DashboardAuditLog[] = [
+  { id: 'dl1', icon: 'handshake', domain: 'crm', userName: '田中 太郎', action: 'サクラテック案件を成約に変更', timestamp: '15:30' },
+  { id: 'dl2', icon: 'calculator', domain: 'accounting', userName: '鈴木 花子', action: '田中太郎の交通費を承認', timestamp: '14:15' },
+  { id: 'dl3', icon: 'phone', domain: 'crm', userName: '佐藤 健一', action: 'アクセル合同会社テレアポ結果記録', timestamp: '10:30' },
+  { id: 'dl4', icon: 'users', domain: 'hr', userName: '山田 美咲', action: '伊藤愛の有給申請を処理', timestamp: '09:00' },
+  { id: 'dl5', icon: 'alert', domain: 'general', userName: '高橋 翔太', action: '備品登録エラー（在庫番号重複）', timestamp: '11:00' },
+  { id: 'dl6', icon: 'file', domain: 'accounting', userName: '鈴木 花子', action: 'ミライソリューション請求書作成', timestamp: '16:00' },
+  { id: 'dl7', icon: 'upload', domain: 'documents', userName: '田中 太郎', action: 'サクラテック契約書アップロード', timestamp: '13:00' },
 ]

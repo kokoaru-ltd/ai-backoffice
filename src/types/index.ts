@@ -190,4 +190,63 @@ export interface MonthlyRevenue {
   month: string
   revenue: number
   expenses: number
+  profit?: number
+}
+
+// KPIスパークラインデータ
+export interface SparklinePoint {
+  value: number
+}
+
+// キャッシュフロー予測
+export interface CashFlowForecast {
+  month: string
+  inflow: number
+  outflow: number
+  net: number
+}
+
+// 経費カテゴリ
+export interface ExpenseCategory {
+  name: string
+  value: number
+  percentage: number
+  color: string
+}
+
+// 売掛金エージング
+export interface ReceivableAging {
+  category: string
+  amount: number
+  color: string
+}
+
+// パイプラインファネル
+export interface PipelineFunnel {
+  stage: string
+  label: string
+  amount: number
+  count: number
+  conversionRate?: number
+}
+
+// 承認待ちタスク
+export interface PendingApproval {
+  id: string
+  avatar: string
+  name: string
+  description: string
+  amount: number
+  timeAgo: string
+  type: 'expense' | 'leave' | 'purchase' | 'contract'
+}
+
+// AI操作ログ（ダッシュボード用タイムライン）
+export interface DashboardAuditLog {
+  id: string
+  icon: string
+  domain: 'accounting' | 'hr' | 'crm' | 'documents' | 'general'
+  userName: string
+  action: string
+  timestamp: string
 }
