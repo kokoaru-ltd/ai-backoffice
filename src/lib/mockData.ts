@@ -28,6 +28,12 @@ import type {
   MonthlyOvertime,
   DepartmentOvertime,
   MonthlyAttendanceSummary,
+  SalesForecast,
+  TeleapoDailyStats,
+  DocTemplate,
+  DocumentExtended,
+  EquipmentExtended,
+  AuditLogExtended,
 } from '../types'
 
 // ── 従業員 ──
@@ -396,4 +402,119 @@ export const mockMonthlyAttendanceSummary: MonthlyAttendanceSummary[] = [
   { employeeId: 'e6', employeeName: '伊藤 愛', department: '営業部', workDays: 13, totalOvertime: 5.0, lateCount: 0, absenceCount: 0 },
   { employeeId: 'e7', employeeName: '渡辺 大輝', department: '開発部', workDays: 15, totalOvertime: 35.5, lateCount: 0, absenceCount: 0 },
   { employeeId: 'e8', employeeName: '中村 さくら', department: '総務部', workDays: 0, totalOvertime: 0, lateCount: 0, absenceCount: 15 },
+]
+
+// ══════════════════════════════════════════
+// CRM ページ追加データ
+// ══════════════════════════════════════════
+
+// ── 売上予測（4ヶ月） ──
+export const mockSalesForecast: SalesForecast[] = [
+  { month: '2月', actual: 3500000, target: 5000000, forecast: 3500000 },
+  { month: '3月', actual: 0, target: 6000000, forecast: 5800000 },
+  { month: '4月', actual: 0, target: 5500000, forecast: 4900000 },
+  { month: '5月', actual: 0, target: 7000000, forecast: 6200000 },
+]
+
+// ── テレアポ日次実績 ──
+export const mockTeleapoDailyStats: TeleapoDailyStats = {
+  totalCalls: 18,
+  connected: 12,
+  appointments: 3,
+  connectionRate: 66.7,
+}
+
+// ══════════════════════════════════════════
+// Documents ページ追加データ
+// ══════════════════════════════════════════
+
+// ── ドキュメントテンプレート ──
+export const mockDocTemplates: DocTemplate[] = [
+  { id: 'tpl1', name: '業務委託契約書', category: 'contract', description: '標準業務委託契約テンプレート。NDA条項・検収基準含む。', usageCount: 24, variables: ['委託者名', '受託者名', '契約期間', '報酬額'], lastUsed: '2026-02-18' },
+  { id: 'tpl2', name: '見積書テンプレート', category: 'invoice', description: '税込・税抜対応の見積書テンプレート。', usageCount: 45, variables: ['顧客名', '案件名', '金額', '有効期限'], lastUsed: '2026-02-21' },
+  { id: 'tpl3', name: '月次レポート', category: 'report', description: 'KPI・実績・課題をまとめた月次報告テンプレート。', usageCount: 12, variables: ['対象月', '部署名', '目標値', '実績値'], lastUsed: '2026-02-20' },
+  { id: 'tpl4', name: '秘密保持契約書（NDA）', category: 'contract', description: '双方向NDAテンプレート。英語版あり。', usageCount: 18, variables: ['甲', '乙', '秘密情報範囲', '有効期限'], lastUsed: '2026-02-15' },
+  { id: 'tpl5', name: '請求書テンプレート', category: 'invoice', description: 'インボイス制度対応の請求書テンプレート。', usageCount: 56, variables: ['顧客名', '請求番号', '金額', '振込先'], lastUsed: '2026-02-22' },
+  { id: 'tpl6', name: '営業提案書', category: 'report', description: '提案書ベーステンプレート。課題分析→提案→見積構成。', usageCount: 15, variables: ['顧客名', '課題', '提案内容', '概算費用'], lastUsed: '2026-02-19' },
+  { id: 'tpl7', name: '社内マニュアル', category: 'manual', description: '業務手順書テンプレート。目次自動生成対応。', usageCount: 8, variables: ['マニュアル名', '対象部署', '作成者'], lastUsed: '2026-01-30' },
+  { id: 'tpl8', name: '雇用契約書', category: 'contract', description: '正社員・契約社員対応の雇用契約テンプレート。', usageCount: 10, variables: ['社員名', '所属部署', '契約期間', '給与'], lastUsed: '2026-02-01' },
+]
+
+// ── ドキュメント拡張版 ──
+export const mockDocumentsExtended: DocumentExtended[] = [
+  { id: 'dex1', title: '就業規則（最新版）', category: 'manual', version: 'v3.2', createdBy: '山田 美咲', createdAt: '2026-01-10', contentPreview: '第1条（目的）本規則は、従業員の就業に関する事項を定めることを目的とする。', fileType: 'pdf' },
+  { id: 'dex2', title: 'サクラテック業務委託契約書', category: 'contract', version: 'v1.0', createdBy: '田中 太郎', createdAt: '2026-02-01', contentPreview: '甲（委託者）：株式会社デモテック 乙（受託者）：株式会社サクラテック', fileType: 'pdf' },
+  { id: 'dex3', title: '2026年2月度月次レポート', category: 'report', version: 'v1.1', createdBy: '鈴木 花子', createdAt: '2026-02-20', contentPreview: '2026年2月度売上実績: ¥15,200,000（前月比+10.1%）営業利益: ¥4,400,000', fileType: 'pdf' },
+  { id: 'dex4', title: '個人情報保護方針', category: 'manual', version: 'v2.0', createdBy: '山田 美咲', createdAt: '2025-11-15', contentPreview: '当社は、個人情報の保護に関する法律に基づき、以下の方針を定めます。', fileType: 'pdf' },
+  { id: 'dex5', title: '東京デジタル請求書_202601', category: 'invoice', version: 'v1.0', createdBy: '鈴木 花子', createdAt: '2026-01-05', contentPreview: '請求番号: INV-2026-0042 請求金額: ¥4,620,000（税込）', fileType: 'pdf' },
+  { id: 'dex6', title: '営業マニュアル v3.0', category: 'manual', version: 'v3.0', createdBy: '田中 太郎', createdAt: '2026-02-10', contentPreview: '第1章: テレアポの基本フロー / 第2章: 提案資料作成のポイント', fileType: 'pdf' },
+  { id: 'dex7', title: 'ミライソリューション見積書', category: 'invoice', version: 'v2.0', createdBy: '佐藤 健一', createdAt: '2026-02-18', contentPreview: 'DX推進支援パッケージ 見積金額: ¥5,000,000（税抜）', fileType: 'pdf' },
+  { id: 'dex8', title: 'クラウド移行提案書', category: 'report', version: 'v1.0', createdBy: '高橋 翔太', createdAt: '2026-01-20', contentPreview: '現行オンプレミス環境からAWSへの移行計画。3フェーズ構成。', fileType: 'pdf' },
+  { id: 'dex9', title: 'セキュリティポリシー', category: 'manual', version: 'v1.5', createdBy: '高橋 翔太', createdAt: '2025-12-20', contentPreview: '情報セキュリティ基本方針。ISMS認証取得に向けた社内規程。', fileType: 'pdf' },
+  { id: 'dex10', title: 'ABC商事 業務委託契約書', category: 'contract', version: 'v1.1', createdBy: '田中 太郎', createdAt: '2026-02-05', contentPreview: '委託業務: AI導入コンサルティング 契約期間: 2026/3/1〜2026/8/31', fileType: 'pdf' },
+  { id: 'dex11', title: 'グローバルコネクト NDA', category: 'contract', version: 'v1.0', createdBy: '伊藤 愛', createdAt: '2026-02-08', contentPreview: '秘密保持契約。秘密情報の定義、開示制限、契約期間を規定。', fileType: 'pdf' },
+  { id: 'dex12', title: '経費精算規程', category: 'manual', version: 'v2.1', createdBy: '鈴木 花子', createdAt: '2026-01-15', contentPreview: '経費精算の対象範囲、申請フロー、承認基準について定める。', fileType: 'pdf' },
+  { id: 'dex13', title: '2026年1月度月次レポート', category: 'report', version: 'v1.0', createdBy: '鈴木 花子', createdAt: '2026-02-05', contentPreview: '2026年1月度売上実績: ¥13,800,000 営業利益: ¥3,400,000', fileType: 'pdf' },
+  { id: 'dex14', title: '大阪商事 見積書', category: 'invoice', version: 'v1.0', createdBy: '佐藤 健一', createdAt: '2026-02-12', contentPreview: '業務自動化ツール導入 見積金額: ¥4,200,000（税抜）', fileType: 'pdf' },
+  { id: 'dex15', title: 'リモートワーク規程', category: 'manual', version: 'v1.0', createdBy: '山田 美咲', createdAt: '2026-01-20', contentPreview: 'テレワーク実施のガイドライン。対象者、申請方法、勤怠管理。', fileType: 'pdf' },
+  { id: 'dex16', title: 'サクラテック追加開発見積書', category: 'invoice', version: 'v1.0', createdBy: '田中 太郎', createdAt: '2026-02-15', contentPreview: '追加開発案件 見積金額: ¥1,500,000（税抜）', fileType: 'pdf' },
+]
+
+// ══════════════════════════════════════════
+// General ページ追加データ
+// ══════════════════════════════════════════
+
+// ── 備品拡張版 ──
+export const mockEquipmentExtended: EquipmentExtended[] = [
+  { id: 'eqx1', name: 'MacBook Pro 14"', category: 'PC', categoryIcon: 'laptop', location: '開発エリア', assignedTo: '高橋 翔太', status: 'in_use', registeredAt: '2025-04-01' },
+  { id: 'eqx2', name: 'MacBook Pro 14"', category: 'PC', categoryIcon: 'laptop', location: '開発エリア', assignedTo: '渡辺 大輝', status: 'in_use', registeredAt: '2025-04-01' },
+  { id: 'eqx3', name: 'Dell U2723QE モニター', category: 'モニター', categoryIcon: 'monitor', location: '開発エリア', assignedTo: '高橋 翔太', status: 'in_use', registeredAt: '2025-04-15' },
+  { id: 'eqx4', name: 'iPhone 15 Pro', category: '携帯電話', categoryIcon: 'smartphone', location: '営業部', assignedTo: '田中 太郎', status: 'in_use', registeredAt: '2025-09-20' },
+  { id: 'eqx5', name: 'Brother MFC-L3780CDW', category: '複合機', categoryIcon: 'printer', location: '共有エリア', assignedTo: '-', status: 'in_use', registeredAt: '2024-06-01' },
+  { id: 'eqx6', name: 'ThinkPad X1 Carbon', category: 'PC', categoryIcon: 'laptop', location: '倉庫', assignedTo: '-', status: 'available', registeredAt: '2024-04-01' },
+  { id: 'eqx7', name: 'Logicool MX Keys', category: 'キーボード', categoryIcon: 'keyboard', location: 'IT管理室', assignedTo: '-', status: 'maintenance', registeredAt: '2025-01-15' },
+  { id: 'eqx8', name: 'Dell U2422H モニター', category: 'モニター', categoryIcon: 'monitor', location: '営業部', assignedTo: '佐藤 健一', status: 'in_use', registeredAt: '2025-03-01' },
+  { id: 'eqx9', name: 'HP LaserJet Pro', category: '複合機', categoryIcon: 'printer', location: '3F会議室', assignedTo: '-', status: 'maintenance', registeredAt: '2024-01-15' },
+  { id: 'eqx10', name: 'iPad Air', category: 'タブレット', categoryIcon: 'tablet', location: '営業部', assignedTo: '伊藤 愛', status: 'in_use', registeredAt: '2025-06-01' },
+  { id: 'eqx11', name: 'ThinkPad T14s', category: 'PC', categoryIcon: 'laptop', location: '経理部', assignedTo: '鈴木 花子', status: 'in_use', registeredAt: '2025-02-01' },
+  { id: 'eqx12', name: 'ASUS ProArt モニター', category: 'モニター', categoryIcon: 'monitor', location: '開発エリア', assignedTo: '渡辺 大輝', status: 'in_use', registeredAt: '2025-07-01' },
+  { id: 'eqx13', name: 'Logicool MX Master 3S', category: 'マウス', categoryIcon: 'mouse', location: '人事部', assignedTo: '山田 美咲', status: 'in_use', registeredAt: '2025-04-01' },
+  { id: 'eqx14', name: 'Cisco Webex Board', category: '会議機器', categoryIcon: 'monitor', location: '大会議室', assignedTo: '-', status: 'in_use', registeredAt: '2024-10-01' },
+  { id: 'eqx15', name: 'AirPods Pro', category: 'イヤホン', categoryIcon: 'headphones', location: '営業部', assignedTo: '田中 太郎', status: 'in_use', registeredAt: '2025-08-01' },
+  { id: 'eqx16', name: 'Surface Pro 9', category: 'PC', categoryIcon: 'laptop', location: '総務部', assignedTo: '中村 さくら', status: 'in_use', registeredAt: '2025-05-01' },
+  { id: 'eqx17', name: 'Canon プロジェクター', category: 'プロジェクター', categoryIcon: 'projector', location: '小会議室', assignedTo: '-', status: 'available', registeredAt: '2023-12-01' },
+  { id: 'eqx18', name: 'Poly Studio P15', category: 'Webカメラ', categoryIcon: 'camera', location: '2F会議室', assignedTo: '-', status: 'in_use', registeredAt: '2025-01-01' },
+  { id: 'eqx19', name: 'Logicool MX Keys Mini', category: 'キーボード', categoryIcon: 'keyboard', location: '倉庫', assignedTo: '-', status: 'available', registeredAt: '2025-03-15' },
+  { id: 'eqx20', name: 'Dell OptiPlex', category: 'PC', categoryIcon: 'desktop', location: '受付', assignedTo: '-', status: 'disposed', registeredAt: '2022-04-01' },
+]
+
+// ══════════════════════════════════════════
+// AuditLog ページ追加データ
+// ══════════════════════════════════════════
+
+// ── 監査ログ拡張版 ──
+export const mockAuditLogsExtended: AuditLogExtended[] = [
+  { id: 'ale1', timestamp: '2026-02-23 09:15:00', userName: '田中 太郎', userAvatar: '田', domain: 'crm', action: 'テレアポ実行', detail: '株式会社ネクストワンへの架電を実行', success: true, processingTime: 1200, requestPayload: '{"target":"株式会社ネクストワン","phone":"03-6789-0123"}', responsePayload: '{"status":"connected","duration":"3m15s"}' },
+  { id: 'ale2', timestamp: '2026-02-23 09:30:00', userName: '鈴木 花子', userAvatar: '鈴', domain: 'accounting', action: '請求書自動生成', detail: 'ミライソリューション向け請求書を自動生成', success: true, processingTime: 3400, requestPayload: '{"client":"合同会社ミライソリューション","amount":1045000}', responsePayload: '{"invoiceNumber":"INV-2026-0046","status":"draft"}' },
+  { id: 'ale3', timestamp: '2026-02-23 10:00:00', userName: '佐藤 健一', userAvatar: '佐', domain: 'crm', action: '商談ステージ更新', detail: '大阪商事 業務自動化案件をリード→提案に変更', success: true, processingTime: 450, requestPayload: '{"dealId":"d5","from":"lead","to":"proposal"}', responsePayload: '{"updated":true}' },
+  { id: 'ale4', timestamp: '2026-02-23 10:15:00', userName: '山田 美咲', userAvatar: '山', domain: 'hr', action: '勤怠データ集計', detail: '2月度の全社員勤怠データを自動集計', success: true, processingTime: 8900, requestPayload: '{"month":"2026-02","scope":"all"}', responsePayload: '{"processed":8,"totalWorkDays":102}' },
+  { id: 'ale5', timestamp: '2026-02-23 10:30:00', userName: '高橋 翔太', userAvatar: '高', domain: 'general', action: '備品登録', detail: '新規モニター（Dell U2422H）を登録', success: false, processingTime: 220, requestPayload: '{"name":"Dell U2422H","serial":"DELL-2025-002"}', responsePayload: '{"error":"duplicate_serial","message":"シリアル番号が重複しています"}' },
+  { id: 'ale6', timestamp: '2026-02-23 11:00:00', userName: '伊藤 愛', userAvatar: '伊', domain: 'crm', action: 'テレアポ結果記録', detail: 'エムテック株式会社へのテレアポ結果を記録（アポ獲得）', success: true, processingTime: 380, requestPayload: '{"company":"エムテック株式会社","result":"appointment"}', responsePayload: '{"recorded":true,"nextAction":"3/1 訪問予定"}' },
+  { id: 'ale7', timestamp: '2026-02-23 11:30:00', userName: '渡辺 大輝', userAvatar: '渡', domain: 'documents', action: 'ドキュメント検索', detail: 'RAG検索: 「業務委託契約のテンプレート」', success: true, processingTime: 1800, requestPayload: '{"query":"業務委託契約のテンプレート","type":"rag_search"}', responsePayload: '{"results":3,"topMatch":"業務委託契約書 v1.0"}' },
+  { id: 'ale8', timestamp: '2026-02-23 12:00:00', userName: '鈴木 花子', userAvatar: '鈴', domain: 'accounting', action: '経費自動分類', detail: '未分類経費5件をAIが自動分類', success: true, processingTime: 2100, requestPayload: '{"count":5,"type":"auto_classify"}', responsePayload: '{"classified":5,"categories":["交通費","通信費","消耗品費"]}' },
+  { id: 'ale9', timestamp: '2026-02-23 13:00:00', userName: '田中 太郎', userAvatar: '田', domain: 'documents', action: '契約書アップロード', detail: 'ABC商事業務委託契約書をアップロード', success: true, processingTime: 5500, requestPayload: '{"filename":"ABC商事_業務委託契約書.pdf","size":"2.4MB"}', responsePayload: '{"docId":"dex10","indexed":true}' },
+  { id: 'ale10', timestamp: '2026-02-23 13:30:00', userName: '佐藤 健一', userAvatar: '佐', domain: 'crm', action: '見積書生成', detail: '大阪商事向け見積書をAI生成', success: true, processingTime: 4200, requestPayload: '{"client":"大阪商事株式会社","items":["業務自動化ツール","導入支援"]}', responsePayload: '{"docId":"dex14","amount":4200000}' },
+  { id: 'ale11', timestamp: '2026-02-23 14:00:00', userName: '山田 美咲', userAvatar: '山', domain: 'hr', action: '有給残高通知', detail: '有給残日数5日以下の社員にリマインド送信', success: true, processingTime: 1500, requestPayload: '{"threshold":5,"type":"reminder"}', responsePayload: '{"notified":["伊藤 愛","中村 さくら"]}' },
+  { id: 'ale12', timestamp: '2026-02-23 14:30:00', userName: '高橋 翔太', userAvatar: '高', domain: 'general', action: 'IT機器棚卸', detail: '開発エリアのIT機器棚卸チェックリスト生成', success: true, processingTime: 3200, requestPayload: '{"area":"開発エリア","type":"inventory_check"}', responsePayload: '{"total":6,"verified":6,"missing":0}' },
+  { id: 'ale13', timestamp: '2026-02-23 15:00:00', userName: '伊藤 愛', userAvatar: '伊', domain: 'crm', action: 'リード自動スコアリング', detail: 'Web経由の新規リード3件をAIスコアリング', success: true, processingTime: 2800, requestPayload: '{"leads":3,"source":"web"}', responsePayload: '{"scored":3,"highPriority":1}' },
+  { id: 'ale14', timestamp: '2026-02-23 15:30:00', userName: '鈴木 花子', userAvatar: '鈴', domain: 'accounting', action: '月次レポート生成', detail: '2月度損益計算書の自動生成', success: true, processingTime: 7600, requestPayload: '{"month":"2026-02","type":"pl_report"}', responsePayload: '{"revenue":15200000,"operatingIncome":4400000}' },
+  { id: 'ale15', timestamp: '2026-02-23 16:00:00', userName: '渡辺 大輝', userAvatar: '渡', domain: 'general', action: 'サポートチケット作成', detail: 'VPN接続エラーのサポートチケットを自動作成', success: true, processingTime: 600, requestPayload: '{"type":"it_support","priority":"high"}', responsePayload: '{"ticketId":"or1","assignedTo":"IT部門"}' },
+  { id: 'ale16', timestamp: '2026-02-22 09:00:00', userName: '田中 太郎', userAvatar: '田', domain: 'crm', action: '商談ステージ更新', detail: 'サクラテック AI導入案件を交渉中→成約に変更', success: true, processingTime: 520, requestPayload: '{"dealId":"d1","from":"negotiation","to":"won"}', responsePayload: '{"updated":true,"amount":3500000}' },
+  { id: 'ale17', timestamp: '2026-02-22 10:00:00', userName: '鈴木 花子', userAvatar: '鈴', domain: 'accounting', action: '入金消込', detail: '東京デジタル ¥4,620,000 の入金を自動消込', success: true, processingTime: 1100, requestPayload: '{"invoice":"INV-2026-0042","amount":4620000}', responsePayload: '{"matched":true,"remainingAR":0}' },
+  { id: 'ale18', timestamp: '2026-02-22 11:00:00', userName: '佐藤 健一', userAvatar: '佐', domain: 'crm', action: 'テレアポ実行', detail: 'ライトハウス株式会社への架電（折返し希望）', success: true, processingTime: 950, requestPayload: '{"company":"ライトハウス株式会社","phone":"03-2345-6789"}', responsePayload: '{"status":"callback","note":"来週改めて電話希望"}' },
+  { id: 'ale19', timestamp: '2026-02-22 14:00:00', userName: '山田 美咲', userAvatar: '山', domain: 'hr', action: '有給申請処理', detail: '伊藤愛の有給申請（2/20）を自動承認', success: true, processingTime: 400, requestPayload: '{"employee":"伊藤 愛","date":"2026-02-20","type":"paid_leave"}', responsePayload: '{"approved":true,"remainingDays":5}' },
+  { id: 'ale20', timestamp: '2026-02-22 15:00:00', userName: '高橋 翔太', userAvatar: '高', domain: 'documents', action: 'マニュアル更新', detail: 'セキュリティポリシー v1.5 を自動更新', success: true, processingTime: 6200, requestPayload: '{"docId":"dex9","from":"v1.4","to":"v1.5"}', responsePayload: '{"updated":true,"changedSections":["3.2","4.1"]}' },
+  { id: 'ale21', timestamp: '2026-02-21 09:30:00', userName: '伊藤 愛', userAvatar: '伊', domain: 'crm', action: 'テレアポ実行', detail: 'アクセル合同会社への架電（アポ獲得）', success: true, processingTime: 1100, requestPayload: '{"company":"アクセル合同会社","phone":"03-0123-4567"}', responsePayload: '{"status":"appointment","date":"2026-03-05"}' },
+  { id: 'ale22', timestamp: '2026-02-21 11:00:00', userName: '鈴木 花子', userAvatar: '鈴', domain: 'accounting', action: '経費承認', detail: '田中太郎の交通費 ¥27,500 を自動承認', success: true, processingTime: 350, requestPayload: '{"expenseId":"exp1","amount":27500}', responsePayload: '{"approved":true}' },
+  { id: 'ale23', timestamp: '2026-02-21 14:00:00', userName: '佐藤 健一', userAvatar: '佐', domain: 'crm', action: 'テレアポ実行', detail: '株式会社ブルースカイへの架電（不在）', success: true, processingTime: 800, requestPayload: '{"company":"株式会社ブルースカイ","phone":"06-1234-5678"}', responsePayload: '{"status":"no_answer","retryScheduled":"2026-02-24"}' },
 ]

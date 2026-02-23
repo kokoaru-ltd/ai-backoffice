@@ -316,3 +316,77 @@ export interface MonthlyAttendanceSummary {
   lateCount: number
   absenceCount: number
 }
+
+// ── CRM追加型 ──
+
+// 売上予測
+export interface SalesForecast {
+  month: string
+  actual: number
+  target: number
+  forecast: number
+}
+
+// テレアポ日次実績
+export interface TeleapoDailyStats {
+  totalCalls: number
+  connected: number
+  appointments: number
+  connectionRate: number
+}
+
+// ── Documents追加型 ──
+
+// ドキュメントテンプレート
+export interface DocTemplate {
+  id: string
+  name: string
+  category: 'contract' | 'invoice' | 'report' | 'manual'
+  description: string
+  usageCount: number
+  variables: string[]
+  lastUsed: string
+}
+
+// ドキュメント拡張版（バージョン付き）
+export interface DocumentExtended {
+  id: string
+  title: string
+  category: 'contract' | 'invoice' | 'report' | 'manual' | 'template' | 'other'
+  version: string
+  createdBy: string
+  createdAt: string
+  contentPreview: string
+  fileType: string
+}
+
+// ── General追加型 ──
+
+// 備品拡張版（設置場所付き）
+export interface EquipmentExtended {
+  id: string
+  name: string
+  category: string
+  categoryIcon: string
+  location: string
+  assignedTo: string
+  status: 'in_use' | 'available' | 'maintenance' | 'disposed'
+  registeredAt: string
+}
+
+// ── AuditLog追加型 ──
+
+// 監査ログ拡張版
+export interface AuditLogExtended {
+  id: string
+  timestamp: string
+  userName: string
+  userAvatar: string
+  domain: 'accounting' | 'hr' | 'crm' | 'documents' | 'general'
+  action: string
+  detail: string
+  success: boolean
+  processingTime: number
+  requestPayload?: string
+  responsePayload?: string
+}
