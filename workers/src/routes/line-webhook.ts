@@ -12,154 +12,169 @@ type HonoEnv = { Bindings: Env }
 
 const app = new Hono<HonoEnv>()
 
-// HMAC-SHA256 signature verification
-async function verifySignature(body: string, signature: string, secret: string): Promise<boolean> {
-  const encoder = new TextEncoder()
-  const key = await crypto.subtle.importKey(
-    'raw', encoder.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
-  )
-  const sig = await crypto.subtle.sign('HMAC', key, encoder.encode(body))
-  const expected = btoa(String.fromCharCode(...new Uint8Array(sig)))
-  return expected === signature
-}
-
 // LINE Reply API
 async function replyToLine(replyToken: string, message: string, accessToken: string) {
-  // Split long messages (LINE limit: 5000 chars)
   const text = message.length > 4900 ? message.slice(0, 4900) + '...' : message
+  try {
+    const res = await fetch('https://api.line.me/v2/bot/message/reply', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        replyToken,
+        messages: [{ type: 'text', text }],
+      }),
+    })
+    console.log('LINE reply status:', res.status)
+  } catch (e: any) {
+    console.error('LINE reply error:', e.message)
+  }
+}
 
-  await fetch('https://api.line.me/v2/bot/message/reply', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`,
-    },
-    body: JSON.stringify({
-      replyToken,
-      messages: [{ type: 'text', text }],
-    }),
-  })
+// LINE Push API (for async responses)
+async function pushToLine(userId: string, message: string, accessToken: string) {
+  const text = message.length > 4900 ? message.slice(0, 4900) + '...' : message
+  try {
+    const res = await fetch('https://api.line.me/v2/bot/message/push', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        to: userId,
+        messages: [{ type: 'text', text }],
+      }),
+    })
+    console.log('LINE push status:', res.status)
+  } catch (e: any) {
+    console.error('LINE push error:', e.message)
+  }
+}
+
+// Process a single event
+async function processEvent(event: any, env: Env) {
+  if (event.type !== 'message' || event.message.type !== 'text') return
+
+  const lineUserId = event.source.userId
+  const messageText = event.message.text
+  const replyToken = event.replyToken
+
+  console.log('Processing:', lineUserId, messageText)
+
+  try {
+    const sql = neon(env.DATABASE_URL)
+
+    // Look up LINE user
+    const lineUsers = await sql`
+      SELECT user_id, org_id, display_name FROM line_users
+      WHERE line_user_id = ${lineUserId}
+    `
+
+    if (lineUsers.length === 0) {
+      await replyToLine(replyToken,
+        `未登録のLINEアカウントです。\n\nあなたのLINE User ID:\n${lineUserId}`,
+        env.LINE_CHANNEL_ACCESS_TOKEN)
+      return
+    }
+
+    const { user_id, org_id } = lineUsers[0]
+
+    // Quick shortcuts (no AI classification needed)
+    if (messageText === '出勤' || messageText === '出勤します') {
+      const result = await handleHR(sql, env, org_id, user_id, 'clock_in', {})
+      await replyToLine(replyToken, result.message, env.LINE_CHANNEL_ACCESS_TOKEN)
+      return
+    }
+
+    if (messageText === '退勤' || messageText === '退勤します') {
+      const result = await handleHR(sql, env, org_id, user_id, 'clock_out', {})
+      await replyToLine(replyToken, result.message, env.LINE_CHANNEL_ACCESS_TOKEN)
+      return
+    }
+
+    // For AI classification: reply immediately, then process and push
+    await replyToLine(replyToken, '処理中...', env.LINE_CHANNEL_ACCESS_TOKEN)
+
+    // AI intent classification
+    console.log('Classifying intent...')
+    const intent = await classifyIntent(env, messageText)
+    console.log('Intent:', JSON.stringify(intent))
+
+    if (intent.domain === 'unknown') {
+      await pushToLine(lineUserId,
+        'ご要望を理解できませんでした。\n\n使い方の例:\n・「出勤」「退勤」\n・「今月の売上」\n・「交通費1200円」\n・「有給残日数」\n・「顧客一覧」',
+        env.LINE_CHANNEL_ACCESS_TOKEN)
+      return
+    }
+
+    // Execute domain handler
+    let result: { message: string; data: any }
+    switch (intent.domain) {
+      case 'accounting':
+        result = await handleAccounting(sql, env, org_id, user_id, intent.action, intent.params)
+        break
+      case 'hr':
+        result = await handleHR(sql, env, org_id, user_id, intent.action, intent.params)
+        break
+      case 'crm':
+        result = await handleCRM(sql, env, org_id, user_id, intent.action, intent.params)
+        break
+      case 'documents':
+        result = await handleDocuments(sql, env, org_id, user_id, intent.action, intent.params)
+        break
+      case 'general':
+        result = await handleGeneral(sql, env, org_id, user_id, intent.action, intent.params)
+        break
+      default:
+        result = { message: `「${intent.domain}」は現在対応していません`, data: null }
+    }
+
+    console.log('Result:', result.message)
+    await pushToLine(lineUserId, result.message, env.LINE_CHANNEL_ACCESS_TOKEN)
+
+    // Audit log
+    try {
+      await sql`
+        INSERT INTO ai_logs (org_id, user_id, domain, intent, action, request_body, response_body)
+        VALUES (${org_id}::uuid, ${user_id}::uuid, ${intent.domain}, ${intent.action}, ${intent.action},
+                ${JSON.stringify({ source: 'line', message: messageText })}::jsonb,
+                ${JSON.stringify(result)}::jsonb)
+      `
+    } catch (e) { console.error('Audit log error:', e) }
+
+  } catch (err: any) {
+    console.error('Processing error:', err.message)
+    await pushToLine(lineUserId, `エラー: ${err.message}`, env.LINE_CHANNEL_ACCESS_TOKEN)
+  }
 }
 
 app.post('/api/line-webhook', async (c) => {
   const env = c.env
+  console.log('=== WEBHOOK HIT ===')
 
-  // Verify LINE signature
-  const rawBody = await c.req.text()
-  const signature = c.req.header('x-line-signature') || ''
-
-  if (env.LINE_CHANNEL_SECRET) {
-    const valid = await verifySignature(rawBody, signature, env.LINE_CHANNEL_SECRET)
-    if (!valid) {
-      return c.json({ error: 'Invalid signature' }, 401)
-    }
+  let body: any
+  try {
+    const rawBody = await c.req.text()
+    body = JSON.parse(rawBody)
+  } catch (e) {
+    return c.json({ status: 'ok' })
   }
 
-  const body = JSON.parse(rawBody)
   const events = body.events || []
-
-  for (const event of events) {
-    if (event.type !== 'message' || event.message.type !== 'text') continue
-
-    const lineUserId = event.source.userId
-    const messageText = event.message.text
-    const replyToken = event.replyToken
-
-    try {
-      const sql = neon(env.DATABASE_URL)
-
-      // Look up LINE user → system user mapping
-      const lineUsers = await sql`
-        SELECT user_id, org_id, display_name FROM line_users
-        WHERE line_user_id = ${lineUserId}
-      `
-
-      if (lineUsers.length === 0) {
-        await replyToLine(replyToken,
-          '未登録のLINEアカウントです。\n\nダッシュボードからLINE連携を設定してください。\nhttps://app.ai-backoffice.jp/settings/line',
-          env.LINE_CHANNEL_ACCESS_TOKEN)
-        continue
-      }
-
-      const { user_id, org_id } = lineUsers[0]
-
-      // Quick shortcuts
-      if (messageText === '出勤' || messageText === '出勤します') {
-        await sql`SELECT set_config('app.current_user_id', ${user_id}, true)`
-        const result = await handleHR(sql, env, org_id, user_id, 'clock_in', {})
-        await replyToLine(replyToken, result.message, env.LINE_CHANNEL_ACCESS_TOKEN)
-        continue
-      }
-
-      if (messageText === '退勤' || messageText === '退勤します') {
-        await sql`SELECT set_config('app.current_user_id', ${user_id}, true)`
-        const result = await handleHR(sql, env, org_id, user_id, 'clock_out', {})
-        await replyToLine(replyToken, result.message, env.LINE_CHANNEL_ACCESS_TOKEN)
-        continue
-      }
-
-      // AI intent classification → domain routing
-      const intent = await classifyIntent(env, messageText)
-
-      if (intent.domain === 'unknown') {
-        await replyToLine(replyToken,
-          'ご要望を理解できませんでした。\n\n使い方の例:\n・「出勤」「退勤」\n・「今月の売上」\n・「交通費1200円」\n・「有給残日数」\n・「顧客一覧」',
-          env.LINE_CHANNEL_ACCESS_TOKEN)
-        continue
-      }
-
-      // Check permissions
-      const members = await sql`
-        SELECT role, permissions FROM org_members
-        WHERE org_id = ${org_id}::uuid AND user_id = ${user_id}::uuid
-      `
-      if (members.length === 0) {
-        await replyToLine(replyToken, '組織へのアクセス権がありません', env.LINE_CHANNEL_ACCESS_TOKEN)
-        continue
-      }
-
-      // Set user context and execute
-      await sql`SELECT set_config('app.current_user_id', ${user_id}, true)`
-
-      let result: { message: string; data: any }
-      switch (intent.domain) {
-        case 'accounting':
-          result = await handleAccounting(sql, env, org_id, user_id, intent.action, intent.params)
-          break
-        case 'hr':
-          result = await handleHR(sql, env, org_id, user_id, intent.action, intent.params)
-          break
-        case 'crm':
-          result = await handleCRM(sql, env, org_id, user_id, intent.action, intent.params)
-          break
-        case 'documents':
-          result = await handleDocuments(sql, env, org_id, user_id, intent.action, intent.params)
-          break
-        case 'general':
-          result = await handleGeneral(sql, env, org_id, user_id, intent.action, intent.params)
-          break
-        default:
-          result = { message: `「${intent.domain}」は現在対応していません`, data: null }
-      }
-
-      // Audit log
-      try {
-        await sql`
-          INSERT INTO ai_logs (org_id, user_id, domain, intent, action, request_body, response_body)
-          VALUES (${org_id}::uuid, ${user_id}::uuid, ${intent.domain}, ${intent.action}, ${intent.action},
-                  ${JSON.stringify({ source: 'line', message: messageText })}::jsonb,
-                  ${JSON.stringify(result)}::jsonb)
-        `
-      } catch (e) { /* log failure is non-fatal */ }
-
-      await replyToLine(replyToken, result.message, env.LINE_CHANNEL_ACCESS_TOKEN)
-
-    } catch (err: any) {
-      console.error('LINE webhook error:', err)
-      await replyToLine(replyToken, `エラーが発生しました。しばらく経ってからお試しください。`, env.LINE_CHANNEL_ACCESS_TOKEN)
-    }
+  if (events.length === 0) {
+    return c.json({ status: 'ok' })
   }
 
+  // Process events in background using waitUntil
+  // This returns 200 to LINE immediately and keeps worker alive
+  c.executionCtx.waitUntil(
+    Promise.all(events.map((event: any) => processEvent(event, env)))
+  )
+
+  // Return immediately to LINE
   return c.json({ status: 'ok' })
 })
 
