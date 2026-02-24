@@ -1,0 +1,13 @@
+name = "ai-backoffice-api"
+main = "workers/src/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "production"
+
+# Secrets (set via `wrangler secret put`):
+# DATABASE_URL
+# ANTHROPIC_API_KEY
+# LINE_CHANNEL_SECRET
+# LINE_CHANNEL_ACCESS_TOKEN

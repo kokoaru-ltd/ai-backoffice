@@ -21,7 +21,10 @@
     "tailwindcss": "^4.2.0"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
+    "@cloudflare/workers-types": "^4.20260303.0",
     "@eslint/js": "^9.39.1",
+    "@neondatabase/serverless": "^1.0.2",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
@@ -30,8 +33,10 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "hono": "^4.12.2",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.48.0",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "wrangler": "^4.68.0"
   }
 }
