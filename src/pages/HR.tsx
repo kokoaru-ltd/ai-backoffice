@@ -134,7 +134,7 @@ export function HR() {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-5">
         {/* ── ヘッダー ── */}
         <div>
           <h1 className="text-2xl font-bold text-gray-900">人事・労務</h1>
@@ -320,11 +320,11 @@ export function HR() {
         )}
 
         {/* ── Row 1: 残業時間推移 + 部署別残業分布 ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* 残業時間推移 */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-4">残業時間推移（12ヶ月）</h2>
-            <div className="h-72">
+            <h2 className="text-base font-semibold text-gray-900 mb-4">残業時間推移（12ヶ月）</h2>
+            <div className="h-60">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={mockMonthlyOvertime} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                   <defs>
@@ -405,8 +405,8 @@ export function HR() {
 
           {/* 部署別残業分布 */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-4">部署別残業分布</h2>
-            <div className="h-72">
+            <h2 className="text-base font-semibold text-gray-900 mb-4">部署別残業分布</h2>
+            <div className="h-60">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={deptOvertimeFlat}
@@ -483,7 +483,7 @@ export function HR() {
 
         {/* ── Row 2: 本日の出退勤状況 ── */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-          <h2 className="text-base font-bold text-gray-900 mb-4">本日の出退勤状況</h2>
+          <h2 className="text-base font-semibold text-gray-900 mb-4">本日の出退勤状況</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -584,10 +584,10 @@ export function HR() {
         </div>
 
         {/* ── Row 3: 有給休暇管理 + 勤怠サマリー ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* 有給休暇管理 */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-4">有給休暇管理</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">有給休暇管理</h2>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -661,7 +661,7 @@ export function HR() {
 
           {/* 今月の勤怠サマリー */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-4">今月の勤怠サマリー</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">今月の勤怠サマリー</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {mockMonthlyAttendanceSummary.map((summary) => {
                 const dept = summary.department

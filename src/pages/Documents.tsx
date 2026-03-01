@@ -63,7 +63,7 @@ export function Documents() {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">ドキュメント</h1>
           <p className="text-gray-500 mt-1">社内文書・テンプレートの検索・閲覧・管理</p>
@@ -136,7 +136,7 @@ export function Documents() {
         {/* ── Document List ── */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-gray-900">ドキュメント一覧</h2>
+            <h2 className="text-base font-semibold text-gray-900">ドキュメント一覧</h2>
             {/* Category filter tabs */}
             <div className="flex gap-1.5">
               {categories.map((cat) => (
@@ -249,7 +249,7 @@ export function Documents() {
 
         {/* ── Template Gallery ── */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">テンプレートギャラリー</h2>
+          <h2 className="text-base font-semibold text-gray-900 mb-4">テンプレートギャラリー</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {mockDocTemplates.map((tpl) => {
               const tplCat = templateCategoryConfig[tpl.category] || templateCategoryConfig.contract

@@ -123,7 +123,7 @@ export function Accounting() {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-5">
         {/* ── ヘッダー: 期間セレクタ ── */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
@@ -202,11 +202,11 @@ export function Accounting() {
         </div>
 
         {/* ── Row 2: 月次推移チャート + 経費内訳ドーナツ ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
           {/* 月次推移チャート (60%) */}
           <div className="lg:col-span-3 bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-4">月次推移チャート</h2>
-            <div className="h-80">
+            <h2 className="text-base font-semibold text-gray-900 mb-4">月次推移チャート</h2>
+            <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={mockMonthlyRevenue} margin={{ top: 5, right: 20, bottom: 5, left: 10 }}>
                   <defs>
@@ -271,8 +271,8 @@ export function Accounting() {
 
           {/* 経費内訳ドーナツ (40%) */}
           <div className="lg:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-4">経費内訳</h2>
-            <div className="h-56">
+            <h2 className="text-base font-semibold text-gray-900 mb-4">経費内訳</h2>
+            <div className="h-48">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -323,15 +323,17 @@ export function Accounting() {
         </div>
 
         {/* ── Row 3: 入出金スケジュール + 未収金 + 最近の仕訳 ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* 入金・出金スケジュール */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-4">入金・出金スケジュール</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">入金・出金スケジュール</h2>
             <div className="space-y-3 max-h-80 overflow-y-auto pr-1">
               {mockPaymentSchedule.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-start gap-3 py-2 border-b border-gray-50 last:border-0"
+                  className={`flex items-start gap-3 py-2 border-b border-gray-50 last:border-0 rounded-lg px-2 ${
+                    item.type === 'income' ? 'bg-green-50/50' : 'bg-red-50/30'
+                  }`}
                 >
                   <div className="flex flex-col items-center shrink-0 w-12">
                     <span className="text-xs text-gray-400">
@@ -395,7 +397,7 @@ export function Accounting() {
           {/* 未収金一覧 */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-bold text-gray-900">未収金一覧</h2>
+              <h2 className="text-base font-semibold text-gray-900">未収金一覧</h2>
               <span className="text-xs text-gray-400">
                 合計 {formatYen(mockAccountsReceivable.reduce((s, a) => s + a.amount, 0))}
               </span>
@@ -417,9 +419,9 @@ export function Accounting() {
                       key={ar.id}
                       className={`border-b border-gray-50 ${
                         ar.status === 'critical'
-                          ? 'bg-red-50/60'
+                          ? 'bg-red-50/60 border-l-4 border-l-red-400'
                           : ar.status === 'overdue'
-                          ? 'bg-amber-50/40'
+                          ? 'bg-amber-50/40 border-l-4 border-l-amber-400'
                           : ''
                       }`}
                     >
@@ -469,7 +471,7 @@ export function Accounting() {
 
           {/* 最近の仕訳 */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-base font-bold text-gray-900 mb-4">最近の仕訳</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">最近の仕訳</h2>
             <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
               {mockJournalEntries.map((entry) => (
                 <div
@@ -512,7 +514,7 @@ export function Accounting() {
 
         {/* ── Row 4: 損益推移テーブル (Full width) ── */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-          <h2 className="text-base font-bold text-gray-900 mb-4">損益推移テーブル</h2>
+          <h2 className="text-base font-semibold text-gray-900 mb-4">損益推移テーブル</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>

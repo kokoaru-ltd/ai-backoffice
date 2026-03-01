@@ -64,15 +64,15 @@ const domainColors: Record<string, string> = {
 export function Dashboard() {
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-5">
         {/* ページヘッダー */}
         <div>
           <h1 className="text-2xl font-bold text-gray-900">経営ダッシュボード</h1>
           <p className="text-gray-500 mt-1 text-sm">2026年2月度 経営概況</p>
         </div>
 
-        {/* ========== 第1行: KPIカード 3x2 ========== */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+        {/* ========== 第1行: KPIカード 6枚1行 ========== */}
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
           {/* 売上高 */}
           <StatCard
             label="売上高"
@@ -163,11 +163,11 @@ export function Dashboard() {
         </div>
 
         {/* ========== 第2行: 売上推移 + 経費カテゴリ ========== */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* 売上・利益推移（12ヶ月） */}
           <div className="lg:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm p-6">
             <h2 className="text-base font-semibold text-gray-900 mb-4">売上・利益推移</h2>
-            <div className="h-72">
+            <div className="h-60">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={mockMonthlyRevenue}>
                   <defs>
@@ -283,11 +283,11 @@ export function Dashboard() {
         </div>
 
         {/* ========== 第3行: キャッシュフロー + 承認待ち + AI操作ログ ========== */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* キャッシュフロー予測 */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
             <h2 className="text-base font-semibold text-gray-900 mb-4">キャッシュフロー予測</h2>
-            <div className="h-56">
+            <div className="h-48">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={mockCashFlowForecast} barGap={2}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -441,11 +441,11 @@ export function Dashboard() {
         </div>
 
         {/* ========== 第4行: 売掛金エージング + パイプラインファネル ========== */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* 売掛金エージング */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
             <h2 className="text-base font-semibold text-gray-900 mb-4">売掛金エージング</h2>
-            <div className="h-56">
+            <div className="h-48">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   data={mockReceivableAging}

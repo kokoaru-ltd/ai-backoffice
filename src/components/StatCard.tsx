@@ -32,12 +32,12 @@ export function StatCard({
 }: StatCardProps) {
   return (
     <div
-      className={`bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 p-6 flex flex-col justify-between relative overflow-hidden${accentColor ? ' border-l-4' : ''}`}
+      className={`bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 p-4 flex flex-col justify-between relative overflow-hidden${accentColor ? ' border-l-4' : ''}`}
       style={accentColor ? { borderLeftColor: accentColor } : undefined}
     >
       <div>
         <p className="text-sm font-medium text-gray-500 mb-1">{label}</p>
-        <p className="text-2xl font-bold text-gray-900 tracking-tight">{value}</p>
+        <p className="text-xl font-bold text-gray-900 tracking-tight">{value}</p>
         {trend && (
           <div className="flex items-center gap-1.5 mt-2">
             {trend.positive ? (

@@ -107,7 +107,7 @@ export function CRM() {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">営業・CRM</h1>
           <p className="text-gray-500 mt-1">商談パイプライン・顧客対応・テレアポ管理</p>
@@ -188,7 +188,7 @@ export function CRM() {
 
         {/* ── Row 1: Pipeline Funnel ── */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-5">パイプラインフロー</h2>
+          <h2 className="text-base font-semibold text-gray-900 mb-5">パイプラインフロー</h2>
           <div className="flex items-stretch gap-0">
             {pipelineData.map((stage, idx) => {
               return (
@@ -251,10 +251,10 @@ export function CRM() {
         </div>
 
         {/* ── Row 2: Kanban + Sales Forecast ── */}
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-5">
           {/* Kanban Board (3/5 width) */}
           <div className="xl:col-span-3 bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">商談ボード</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">商談ボード</h2>
             <div className="grid grid-cols-5 gap-3">
               {stages.map((stage) => {
                 const deals = mockDeals.filter(d => d.stage === stage.key)
@@ -314,8 +314,8 @@ export function CRM() {
 
           {/* Sales Forecast (2/5 width) */}
           <div className="xl:col-span-2 bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">売上予測</h2>
-            <div className="h-72">
+            <h2 className="text-base font-semibold text-gray-900 mb-4">売上予測</h2>
+            <div className="h-60">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={mockSalesForecast} barGap={2}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
@@ -364,10 +364,10 @@ export function CRM() {
         </div>
 
         {/* ── Row 3: Activity / Customer Ranking / Teleapo Stats ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Activity Timeline */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">最近のアクティビティ</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">最近のアクティビティ</h2>
             <div className="space-y-0">
               {mockInteractions.map((interaction, idx) => {
                 const typeInfo = interactionIcons[interaction.type] || interactionIcons.call
@@ -409,7 +409,7 @@ export function CRM() {
 
           {/* Customer Ranking */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">顧客ランキング</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">顧客ランキング</h2>
             <div className="space-y-3">
               {contactDealTotals.map((contact, i) => {
                 const medals = ['bg-amber-100 text-amber-600 border-amber-300', 'bg-gray-100 text-gray-500 border-gray-300', 'bg-orange-100 text-orange-600 border-orange-300']
@@ -435,7 +435,7 @@ export function CRM() {
 
           {/* Teleapo Stats */}
           <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">テレアポ実績</h2>
+            <h2 className="text-base font-semibold text-gray-900 mb-4">テレアポ実績</h2>
 
             {/* Today's stats */}
             <div className="grid grid-cols-3 gap-3 mb-5">
@@ -508,7 +508,7 @@ export function CRM() {
         {/* ── Row 4: Teleapo Schedule Table ── */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold text-gray-900">テレアポスケジュール</h2>
+            <h2 className="text-base font-semibold text-gray-900">テレアポスケジュール</h2>
             <span className="text-xs text-gray-400">{mockTeleapoSchedule.length}件</span>
           </div>
           <div className="overflow-x-auto">

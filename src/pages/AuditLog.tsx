@@ -75,7 +75,7 @@ export function AuditLog() {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">AI操作ログ</h1>
           <p className="text-gray-500 mt-1">AIが実行した操作の履歴を確認</p>
